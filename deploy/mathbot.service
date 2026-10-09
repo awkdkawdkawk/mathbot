@@ -1,0 +1,17 @@
+[Unit]
+Description=Math Telegram bot (5-9 класи)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mathbot
+WorkingDirectory=/opt/mathbot
+ExecStart=/opt/mathbot/venv/bin/python bot.py
+Restart=on-failure
+RestartSec=5
+# боту потрібно ~100 МБ, обмеження на випадок збоїв
+MemoryMax=300M
+
+[Install]
+WantedBy=multi-user.target
