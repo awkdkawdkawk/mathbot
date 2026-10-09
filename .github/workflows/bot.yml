@@ -18,6 +18,7 @@ jobs:
     timeout-minutes: 65
     env:
       BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+      STATE_KEY: ${{ secrets.STATE_KEY }}
       RUN_FOR_SECONDS: "3480"
       TZ: Europe/Kyiv
     steps:

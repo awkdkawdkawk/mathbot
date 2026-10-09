@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import html
-import json
 import logging
 import os
 import sys
@@ -32,6 +31,7 @@ from telegram.ext import (
 )
 
 import problems as P
+from crypto_store import load_json, save_json
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_FILE = BASE_DIR / "data.json"
@@ -103,23 +103,14 @@ def main_keyboard() -> ReplyKeyboardMarkup:
 # ---------------------------------------------------------------- storage
 
 def load_data() -> dict:
-    if DATA_FILE.exists():
-        try:
-            data = json.loads(DATA_FILE.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            log.exception("Не вдалося прочитати %s, створюю новий", DATA_FILE)
-            data = {}
-    else:
-        data = {}
+    data = load_json(DATA_FILE)
     data.setdefault("rotation", 0)
     data.setdefault("chats", {})
     return data
 
 
 def save_data(data: dict) -> None:
-    DATA_FILE.write_text(
-        json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+    save_json(DATA_FILE, data)
 
 
 def get_chat(chat_id: int) -> dict:
